@@ -42,7 +42,7 @@ document.addEventListener('keyup', (e) => {
     return;
   }
 
-  let found = pressKey.match(/[a-z]/gi);
+  let found = pressedKey.match(/[a-z]/gi);
 
   if (!found || found.length > 1) {
     return;
@@ -63,4 +63,51 @@ function insertLetter(pressedKey) {
   box.classList.add('filled-box');
   currentGuess.push(pressedKey);
   nextLetter += 1;
+}
+
+function deleteLetter() {
+  let row = document.getElementsByClassName('letter-row')[6 - guessesRemaining];
+  let box = row.children[nextLetter - 1];
+  box.textContent = '';
+  box.classList.remove('filled-box');
+  currentGuess.pop();
+  nextLetter -= 1;
+}
+
+function checkGuess() {
+  let row = document.getElementsByClassName('letter-row')[6 - guessesRemaining];
+  let guessString = '';
+  let rightGuess = Array.from(rightGuessString);
+
+  for (const val of currentGuess) {
+    guessString += val;
+  }
+
+  if (guessString.length != 5) {
+    alert('Not enough letters!');
+    return;
+  }
+
+  if (!WORDS.includes(guessString)) {
+    alert('word not in list!');
+    return;
+  }
+
+  for (let i = 0; i < 5; i++) {
+    let letterColor = '';
+    let box = row.children[i];
+    let letter = currentGuess[i];
+
+    let lerrerPosition = rightGuess.indexOf(currentGuess[i]);
+
+    if (lerrerPosition === -1) {
+      letterColor = 'grey';
+    } else {
+      if (currentGuess[i] === rightGuess[i]) {
+        letterColor = 'green';
+      } else {
+        letterColor = 'yellow';
+      }
+    }
+  }
 }
